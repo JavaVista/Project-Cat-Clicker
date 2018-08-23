@@ -2,7 +2,7 @@
     background-color: #333;
     float: inherit;
     width: 900px;
-    position: relative; 
+    position: relative;
     margin: 0 auto 0 auto;
 }
 
@@ -30,6 +30,20 @@
     padding: 25px 25px 5px 25px;
 }
 
+.count {
+    text-align: center;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.kitty-image {
+    float: left;
+    width: 600px;
+    border: 1px solid #999;
+    margin: 0 15px 25px 15px;
+    padding: 5px;
+}
+
 .side {
     float: left;
     width: 170px;
@@ -40,6 +54,10 @@
     color: #ccc;
     padding: 25px 15px 10px 15px;
     line-height: 16px;
+}
+
+.side ul {
+    list-style: none;
 }
 
 #footer {
@@ -54,10 +72,3 @@
     padding: 20px 0 0 25px;
 }
 
-.catimages {
-    float: left;
-    width: 155px;
-    border: 1px solid #999;
-    margin: 0 15px 25px 15px;
-    padding: 5px;
-}
