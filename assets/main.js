@@ -26,7 +26,9 @@ function handler() {
   addKitties();
   document
     .querySelectorAll('.kitty-image')
-    .forEach(kittyImage => kittyImage.addEventListener('click', incrementCat));
+    .forEach(kittyImage =>
+      kittyImage.addEventListener('click', incrementCat, false)
+    );
 }
 
 // iterate thru the array
@@ -36,23 +38,22 @@ function addKitties() {
     adding += `<h2>${cat.name}</h2>
         <div class="kitty-name"></div>
         <div id=${cat.id} class="count">CUTIE COUNT: ${cat.counter}</div>
-        <img class="kitty-image" src=${cat.image} alt="Here Kitty Kitty">`;
+        <img id=${cat.id} class="kitty-image" src=${
+      cat.image
+    } alt="Here Kitty Kitty">`;
   });
   element.innerHTML = adding;
 }
 
 // each cat increment function
 function incrementCat(e) {
-
-  if (e.target ===  kitties[0].image) {
-    let count1 = kitties[0].counter++;
-    e.target.innerHTML = `CUTIE COUNT: ${count1}`;
-    console.log(e.target);
-  } else {
-    let count2 = kitties[1].counter++;
-    e.target.innerHTML = `CUTIE COUNT: ${count2}`;
-    console.log(e.target);
+  if (e.target === e.currentTarget) {
+    let clicked = e.target.id;
+    let count1 = kitties.counter++;
+    kittyCount.innerHTML = `CUTIE COUNT: ${count1}`;
+    console.log(clicked, kittyCount);
   }
+  e.stopPropagation();
 }
 
 window.onload = () => {
