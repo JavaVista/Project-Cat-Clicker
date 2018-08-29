@@ -15,42 +15,46 @@ const kitties = [
 
 // selected kitty
 let index = 0;
-let image = kitties.image;
-let count = kitties.count;
 
 // select page elements
-let kittyCount = document.querySelector('.count');
-let kittyName = document.querySelector('h2');
+let kittyCount = document.querySelectorAll('.count');
+let kittyName = document.querySelectorAll('h2');
 let element = document.querySelector('.content');
 
 // Setup click handler
 function handler() {
   addKitties();
-  let kittyImage = document.querySelector('.kitty-image');
-  kittyImage.addEventListener(
-      'click',
-      obj => {
-          let elem = obj.target.parentElement.childNodes[4];
-          console.log(elem.id);
-          index++;
-          elem.innerHTML = `CUTIE COUNT: ${index}`;
-        },
-        false
-    );
+  document
+    .querySelectorAll('.kitty-image')
+    .forEach(kittyImage => kittyImage.addEventListener('click', incrementCat));
 }
 
 // iterate thru the array
 function addKitties() {
-    let adding = '';
-    kitties.forEach(cat => {
-        adding += `<h2>${cat.name}</h2>
+  let adding = '';
+  kitties.forEach(cat => {
+    adding += `<h2>${cat.name}</h2>
         <div class="kitty-name"></div>
         <div id=${cat.id} class="count">CUTIE COUNT: ${cat.counter}</div>
         <img class="kitty-image" src=${cat.image} alt="Here Kitty Kitty">`;
-    });
-    element.innerHTML = adding;
+  });
+  element.innerHTML = adding;
+}
+
+// each cat increment function
+function incrementCat(e) {
+
+  if (e.target ===  kitties[0].image) {
+    let count1 = kitties[0].counter++;
+    e.target.innerHTML = `CUTIE COUNT: ${count1}`;
+    console.log(e.target);
+  } else {
+    let count2 = kitties[1].counter++;
+    e.target.innerHTML = `CUTIE COUNT: ${count2}`;
+    console.log(e.target);
+  }
 }
 
 window.onload = () => {
-    handler();
+  handler();
 };
