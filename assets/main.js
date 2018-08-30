@@ -13,9 +13,6 @@ const kitties = [
   }
 ];
 
-// selected kitty
-let index = 0;
-
 // select page elements
 let kittyCount = document.querySelectorAll('.count');
 let kittyName = document.querySelectorAll('h2');
@@ -37,7 +34,7 @@ function addKitties() {
   kitties.forEach(cat => {
     adding += `<h2>${cat.name}</h2>
         <div class="kitty-name"></div>
-        <div id=${cat.id} class="count">CUTIE COUNT: ${cat.counter}</div>
+        <div class="count">CUTIE COUNT: ${cat.counter}</div>
         <img id=${cat.id} class="kitty-image" src=${
       cat.image
     } alt="Here Kitty Kitty">`;
@@ -49,9 +46,13 @@ function addKitties() {
 function incrementCat(e) {
   if (e.target === e.currentTarget) {
     let clicked = e.target.id;
-    let count1 = kitties.counter++;
-    kittyCount.innerHTML = `CUTIE COUNT: ${count1}`;
-    console.log(clicked, kittyCount);
+    for (const obj of kitties) {
+      if (obj.id == clicked) {
+        let count1 = obj.counter++;
+        e.target.previousSibling.previousSibling.innerHTML = `CUTIE COUNT: ${count1}`;
+        console.log(clicked, obj, count1);
+      }
+    }
   }
   e.stopPropagation();
 }
