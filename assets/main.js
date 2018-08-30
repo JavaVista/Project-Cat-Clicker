@@ -49,7 +49,7 @@ function incrementCat(e) {
     for (const obj of kitties) {
       if (obj.id == clicked) {
         let count1 = obj.counter++;
-        e.target.previousSibling.previousSibling.innerHTML = `CUTIE COUNT: ${count1}`;
+        e.target.previousSibling.previousSibling.innerHTML = `CUTIE COUNT: ${obj.counter}`;
         console.log(clicked, obj, count1);
       }
     }
