@@ -84,18 +84,29 @@ let kittyCount = document.querySelectorAll('.count');
 let kittyName = document.querySelectorAll('h2');
 let element = document.querySelector('.content');
 
-// Setup click handler
+// button menu handler
+function buttonHandler() {
+  let buttons = document.querySelector('.side');
+  buttons.addEventListener('click', selectKitty, false);
+}
+
+function selectKitty(e) {
+  if (e.target !== e.currentTarget) {
+    let clickedButton = e;
+    addKitties();
+    console.log('hey ' + clickedButton)
+  }
+  e.stopPropagation();
+}
+
+// image click handler
 function handler() {
-  addKitties();
-  document
-    .querySelectorAll('.kitty-image')
-    .forEach(kittyImage =>
-      kittyImage.addEventListener('click', incrementCat, false)
-    );
+  kittyImage = document.querySelector('.kitty-image');
+  kittyImage.addEventListener('click', incrementCat, false);
 }
 
 // iterate thru the array
-function addKitties() {
+function addKitties(e) {
   let adding = '';
   kitties.forEach(cat => {
     adding += `<h2>${cat.name}</h2>
@@ -106,6 +117,7 @@ function addKitties() {
     } alt="Here Kitty Kitty">`;
   });
   element.innerHTML = adding;
+  handler();
 }
 
 // each cat increment function
@@ -115,8 +127,9 @@ function incrementCat(e) {
     for (const obj of kitties) {
       if (obj.id == clicked) {
         obj.counter++;
-        e.target.previousSibling.previousSibling.innerHTML = `CUTIE COUNT: ${obj.counter}`;
-        console.log(clicked, obj);
+        e.target.previousSibling.previousSibling.innerHTML = `CUTIE COUNT: ${
+          obj.counter
+        }`;
       }
     }
   }
@@ -124,5 +137,5 @@ function incrementCat(e) {
 }
 
 window.onload = () => {
-  handler();
+  buttonHandler();
 };
