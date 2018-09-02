@@ -92,9 +92,7 @@ function buttonHandler() {
 
 function selectKitty(e) {
   if (e.target !== e.currentTarget) {
-    let clickedButton = e;
-    addKitties();
-    console.log('hey ' + clickedButton)
+    addKitties(e);
   }
   e.stopPropagation();
 }
@@ -109,15 +107,18 @@ function handler() {
 function addKitties(e) {
   let adding = '';
   kitties.forEach(cat => {
-    adding += `<h2>${cat.name}</h2>
-        <div class="kitty-name"></div>
-        <div class="count">CUTIE COUNT: ${cat.counter}</div>
-        <img id=${cat.id} class="kitty-image" src=${
-      cat.image
-    } alt="Here Kitty Kitty">`;
+    if (e.target.id == cat.id) {
+      adding = `
+      <div class="kitty-name">
+      <h2>${cat.name}</h2>
+          <div class="count">CUTIE COUNT: ${cat.counter}</div>
+          <img id=${cat.id} class="kitty-image" src=${
+        cat.image
+      } alt="Here Kitty Kitty"></div>`;
+      element.innerHTML = adding;
+      handler();
+    }
   });
-  element.innerHTML = adding;
-  handler();
 }
 
 // each cat increment function
