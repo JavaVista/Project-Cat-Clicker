@@ -1,4 +1,5 @@
-const kitties = [
+// Model
+const model = [
   {
     name: 'Reveal',
     image: 'assets/img/animal-3118722_640.jpg',
@@ -79,6 +80,54 @@ const kitties = [
   }
 ];
 
+// Octopus
+const octopus = (() => {
+  selectedKitty = model[0];
+  function init() {
+    kittyView.handler();
+    kittyView.render(selectedKitty);
+  }
+  function incrementCat(e) {
+    selectedKitty.counter++;
+    kittyView.render(selectedKitty);
+    e.stopPropagation();
+  }
+  return {
+    init,
+    incrementCat
+
+  }
+})();
+window.addEventListener('load', octopus.init);
+
+// View
+const kittyView = (() => {
+  let element = document.querySelector('.content');
+
+  function handler() {
+    //let kittyImage = document.querySelector('.kitty-image');
+    element.addEventListener('click' , octopus.incrementCat, false);
+  }
+
+  function render(cat) {
+    element.innerHTML = `
+    <div class="kitty-name">
+    <h2>${cat.name}</h2>
+    <div class="count">CUTIE COUNT: ${cat.counter}</div>
+    <img id=${cat.id} class="kitty-image" src=${cat.image} alt="Here Kitty Kitty">
+    </div>`;
+  }
+  return {
+    handler,
+    render
+  };
+})();
+
+
+
+
+/////////////////////////////////////////
+
 // select page elements
 let kittyCount = document.querySelectorAll('.count');
 let kittyName = document.querySelectorAll('h2');
@@ -99,14 +148,14 @@ function selectKitty(e) {
 
 // image click handler
 function handler() {
-  kittyImage = document.querySelector('.kitty-image');
+  let kittyImage = document.querySelector('.kitty-image');
   kittyImage.addEventListener('click', incrementCat, false);
 }
 
 // iterate thru the array
 function addKitties(e) {
   let adding = '';
-  kitties.forEach(cat => {
+  model.forEach(cat => {
     if (e.target.id == cat.id) {
       adding = `
       <div class="kitty-name">
@@ -125,7 +174,7 @@ function addKitties(e) {
 function incrementCat(e) {
   if (e.target === e.currentTarget) {
     let clicked = e.target.id;
-    for (const obj of kitties) {
+    for (const obj of model) {
       if (obj.id == clicked) {
         obj.counter++;
         e.target.previousSibling.previousSibling.innerHTML = `CUTIE COUNT: ${
