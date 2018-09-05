@@ -63,7 +63,7 @@
   text-align: center;
 }
 
-.side ul {
+.side li {
   list-style: none;
 }
 
@@ -88,8 +88,6 @@ button {
   border: 0;
   margin-bottom: 10px;
   margin-right: 40px;
+  float: right;
 }
 
-h2 {
-  text-align: center;
-}
