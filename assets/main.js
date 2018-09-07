@@ -22,7 +22,7 @@ const model = [
     id: 3
   },
   {
-    name: 'Glasses',
+    name: 'Glass',
     image: 'assets/img/cat-984097_640.jpg',
     counter: 0,
     selected: false,
@@ -98,9 +98,18 @@ const octopus = (() => {
   selectedKitty = model[0];
   function init() {
     kittyView.handler();
+    kittyList.buttonHandler();
     kittyView.render(selectedKitty);
-    kittyList.render(model);
+    kittyList.renderList(model);
   }
+
+  function selectKitty(id) {
+    selectedKitty = model.find(cat => {
+      return cat.id === Number(id);
+    });
+    kittyView.render(selectedKitty);
+  }
+
   function incrementCat(e) {
     selectedKitty.counter++;
     kittyView.render(selectedKitty);
@@ -108,19 +117,19 @@ const octopus = (() => {
   }
   return {
     init,
-    incrementCat
-
-  }
+    incrementCat,
+    selectKitty
+  };
 })();
 window.addEventListener('load', octopus.init);
 
 // View
 const kittyView = (() => {
   let element = document.querySelector('.content');
-  //let kittyImage = document.querySelector('.kitty-image');
-
+ /*TODO: target picture e targeting outside of it to increase counter
+  let kittyImage = document.querySelector('.kitty-image'); */
   function handler() {
-    element.addEventListener('click' , octopus.incrementCat, false);
+    element.addEventListener('click', octopus.incrementCat, false);
   }
 
   function render(cat) {
@@ -128,7 +137,9 @@ const kittyView = (() => {
     <div class="kitty-name">
     <h2>${cat.name}</h2>
     <div class="count">CUTIE COUNT: ${cat.counter}</div>
-    <img id=${cat.id} class="kitty-image" src=${cat.image} alt="Here Kitty Kitty">
+    <img id=${cat.id} class="kitty-image" src=${
+      cat.image
+    } alt="Here Kitty Kitty">
     </div>`;
   }
   return {
@@ -137,82 +148,36 @@ const kittyView = (() => {
   };
 })();
 
-const kittyList = ((listElement) => {
+const kittyList = (listElement => {
   const kittyDisplay = listElement;
-  function render(cats) {
+
+  function buttonHandler() {
+    kittyDisplay.addEventListener(
+      'click',
+      function(e) {
+        /*TODO: fix bug conserning e.target going outside of button.
+          use this to target button:
+          const kittyButton = document.querySelector('button');
+          console.log('this',this, kittyButton); */
+        let id = e.target.id;
+        octopus.selectKitty(id);
+        e.stopPropagation();
+      },
+      false
+    );
+  }
+
+  function renderList(cats) {
     kittyDisplay.innerHTML = `<h2>List of Kitties</h2>`;
     cats.forEach(cat => {
-      kittyDisplay.innerHTML += `<li><button id=${cat.id}>${cat.name}</button></li>`;
+      kittyDisplay.innerHTML += `<li><button id=${cat.id}>${
+        cat.name
+      }</button></li>`;
     });
- }
+  }
+
   return {
-    render
-}
+    renderList,
+    buttonHandler
+  };
 })(document.querySelector('.side'));
-
-
-
-
-/////////////////////////////////////////
-
-// select page elements
-let kittyCount = document.querySelectorAll('.count');
-let kittyName = document.querySelectorAll('h2');
-let element = document.querySelector('.content');
-
-// button menu handler
-function buttonHandler() {
-  let buttons = document.querySelector('.side');
-  buttons.addEventListener('click', selectKitty, false);
-}
-
-function selectKitty(e) {
-  if (e.target !== e.currentTarget) {
-    addKitties(e);
-  }
-  e.stopPropagation();
-}
-
-// image click handler
-function handler() {
-  let kittyImage = document.querySelector('.kitty-image');
-  kittyImage.addEventListener('click', incrementCat, false);
-}
-
-// iterate thru the array
-function addKitties(e) {
-  let adding = '';
-  model.forEach(cat => {
-    if (e.target.id == cat.id) {
-      adding = `
-      <div class="kitty-name">
-      <h2>${cat.name}</h2>
-          <div class="count">CUTIE COUNT: ${cat.counter}</div>
-          <img id=${cat.id} class="kitty-image" src=${
-        cat.image
-      } alt="Here Kitty Kitty"></div>`;
-      element.innerHTML = adding;
-      handler();
-    }
-  });
-}
-
-// each cat increment function
-function incrementCat(e) {
-  if (e.target === e.currentTarget) {
-    let clicked = e.target.id;
-    for (const obj of model) {
-      if (obj.id == clicked) {
-        obj.counter++;
-        e.target.previousSibling.previousSibling.innerHTML = `CUTIE COUNT: ${
-          obj.counter
-        }`;
-      }
-    }
-  }
-  e.stopPropagation();
-}
-
-window.onload = () => {
-  buttonHandler();
-};
