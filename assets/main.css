@@ -83,15 +83,31 @@
   position: sticky;
 }
 
-button {
+.admin{
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-size: 12px;
+  color: #ccc;
+  text-align: center;
+}
+
+#edit {
   border-radius: 50%;
-  padding: 30px;
+  padding: 17px;
   font-family: cursive;
   background-color: #fc0;
   text-align: center;
   border: 0;
-  margin-bottom: 10px;
-  margin-right: 40px;
-  float: right;
+}
+
+.list {
+  border-radius: 50%;
+  margin-bottom: 5%;
+  width:50%;
+  padding: 10%;
+  font-family: cursive;
+  background-color: #fc0;
+  text-align: center;
+  border: 0;
 }
 

@@ -115,6 +115,7 @@ const octopus = (() => {
     kittyView.render(selectedKitty);
     e.stopPropagation();
   }
+
   return {
     init,
     incrementCat,
@@ -124,8 +125,8 @@ const octopus = (() => {
 window.addEventListener('load', octopus.init);
 
 // View
-const kittyView = (() => {
-  let element = document.querySelector('.content');
+const kittyView = (viewElement => {
+  let element = viewElement;
  /*TODO: target picture e targeting outside of it to increase counter
   let kittyImage = document.querySelector('.kitty-image'); */
   function handler() {
@@ -140,13 +141,16 @@ const kittyView = (() => {
     <img id=${cat.id} class="kitty-image" src=${
       cat.image
     } alt="Here Kitty Kitty">
-    </div>`;
+    </div>
+    <div class="admin edit-kitty"><p>Select an Kitty image if you want to edit it or to add a different image</p>
+<button id="edit">Edit Kitty</button>
+</div>`;
   }
   return {
     render,
     handler
   };
-})();
+})(document.querySelector('.content'));
 
 const kittyList = (listElement => {
   const kittyDisplay = listElement;
@@ -155,7 +159,7 @@ const kittyList = (listElement => {
     kittyDisplay.addEventListener(
       'click',
       function(e) {
-        /*TODO: fix bug conserning e.target going outside of button.
+        /*TODO: fix bug concerning e.target going outside of button.
           use this to target button:
           const kittyButton = document.querySelector('button');
           console.log('this',this, kittyButton); */
@@ -170,14 +174,17 @@ const kittyList = (listElement => {
   function renderList(cats) {
     kittyDisplay.innerHTML = `<h2>List of Kitties</h2>`;
     cats.forEach(cat => {
-      kittyDisplay.innerHTML += `<li><button id=${cat.id}>${
+      kittyDisplay.innerHTML += `<li><button class="list" id=${cat.id}>${
         cat.name
       }</button></li>`;
     });
   }
-
   return {
     renderList,
     buttonHandler
   };
 })(document.querySelector('.side'));
+
+const viewAdmin = (adminElement => {
+
+})()
