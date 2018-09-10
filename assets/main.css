@@ -67,23 +67,38 @@
   list-style: none;
 }
 
-#footer {
-  clear: both;
-  width: 875px;
-  background-color: #fc0;
+.admin-form {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-weight: normal;
+  font-style: normal;
   font-size: 12px;
-  color: #333;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  padding: 0.79rem;
-  flex-shrink: 0;
-  position: sticky;
+  color: #ccc;
+  position:absolute;
+  left:18%;
+  bottom:15%;
+  margin-left:auto;
+  margin-right:auto;
+  text-align: center;
 }
 
-.admin{
+input{
+  width: 300px;
+  font-size: inherit;
+  padding: 0.em;
+  margin: 0.7em 0.7em;
+}
+
+#save, #cancel {
+  margin: 0.7em 0.7em;
+  width: 20%;
+  text-align: center;
+  border-radius: 50%;
+  padding: 17px;
+  font-family: cursive;
+  background-color: #fc0;
+  border: 0;
+}
+
+.admin {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-style: normal;
   font-size: 12px;
@@ -111,3 +126,18 @@
   border: 0;
 }
 
+#footer {
+  clear: both;
+  width: 875px;
+  background-color: #fc0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: normal;
+  font-size: 12px;
+  color: #333;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 0.79rem;
+  flex-shrink: 0;
+  position: sticky;
+}

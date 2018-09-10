@@ -101,7 +101,9 @@ const octopus = (() => {
     kittyList.buttonHandler();
     kittyView.render(selectedKitty);
     kittyList.renderList(model);
-    viewAdmin.initAdmin();
+    viewAdmin.formInit();
+    viewAdmin.toggleKittyForm();
+   // viewAdmin.renderForm(selectedKitty);
   }
 
   function selectKitty(id) {
@@ -113,19 +115,23 @@ const octopus = (() => {
 
   function incrementCat(e) {
     if (e.target && e.target.nodeName == 'IMG') {
-      console.log('hi')
       selectedKitty.counter++;
       kittyView.render(selectedKitty);
-    };
+    }
+  }
+
+  function selectButtonKitty(e) {
+
+    viewAdmin.renderForm();
   }
 
   return {
     init,
     incrementCat,
-    selectKitty
+    selectKitty,
+    selectButtonKitty
   };
 })();
-window.addEventListener('load', octopus.init,);
 
 // View
 const kittyView = (viewElement => {
@@ -152,10 +158,11 @@ const kittyView = (viewElement => {
     render,
     handler
   };
-})(document.querySelector('.content'), document.querySelector('.kitty-image'));
+})(document.querySelector('.content'));
 
 const kittyList = (listElement => {
   const kittyDisplay = listElement;
+
   function buttonHandler() {
     kittyDisplay.addEventListener(
       'click',
@@ -163,8 +170,7 @@ const kittyList = (listElement => {
         if (e.target && e.target.nodeName == 'BUTTON') {
           let id = e.target.id;
           octopus.selectKitty(id);
-          console.log('hi');
-        };
+        }
       },
       false
     );
@@ -185,20 +191,33 @@ const kittyList = (listElement => {
 })(document.querySelector('.side'));
 
 const viewAdmin = (adminElement => {
-  const displayAdmin = adminElement;
-   
-  function initAdmin() {
-    displayAdmin.addEventListener(
-      'click',
-      function() {
-        let click = e;
-        console.log(click, 'this');
-        e.stopPropagation();
-      },
-      false
-    );
+  let displayAdmin = adminElement;
+
+  const formInit = () => {
+	const adminButton = document.querySelector('#edit');
+    adminButton.addEventListener('click', octopus.selectButtonKitty, false);
+  };
+
+  let editArea = document.getElementById('form');
+	const renderForm = () => {
+		editArea.innerHTML = `<form class="admin-form">Name:<input type='text' name='name'>
+		<br>Image:<input type='text' name='image'>
+		<br>Count:<input type='text' name='clicks'>
+		<br><button id='save'>Save</button>
+		<br><button id='cancel'>Cancel</button>
+		</form>`;
+		console.log(editArea, 'form');
+	};
+
+	function toggleKittyForm() {
+
+
   }
   return {
-    initAdmin
+    formInit,
+    renderForm,
+    toggleKittyForm
   };
-})(document.querySelector('.admin'));
+})(document.querySelector('.edit-kitty'));
+
+document.addEventListener('DOMContentLoaded', octopus.init);
