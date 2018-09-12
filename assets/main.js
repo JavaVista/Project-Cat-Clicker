@@ -103,7 +103,7 @@ const octopus = (() => {
     kittyList.renderList(model);
     viewAdmin.formInit();
     viewAdmin.toggleKittyForm();
-   // viewAdmin.renderForm(selectedKitty);
+
   }
 
   function selectKitty(id) {
@@ -111,6 +111,8 @@ const octopus = (() => {
       return cat.id === Number(id);
     });
     kittyView.render(selectedKitty);
+    viewAdmin.renderForm(selectedKitty);
+    //selectedKitty = model[0];
   }
 
   function incrementCat(e) {
@@ -129,7 +131,8 @@ const octopus = (() => {
     init,
     incrementCat,
     selectKitty,
-    selectButtonKitty
+    selectButtonKitty,
+    selectedKitty 
   };
 })();
 
@@ -199,14 +202,19 @@ const viewAdmin = (adminElement => {
   };
 
   let editArea = document.getElementById('form');
-	const renderForm = () => {
-		editArea.innerHTML = `<form class="admin-form">Name:<input type='text' name='name'>
-		<br>Image:<input type='text' name='image'>
-		<br>Count:<input type='text' name='clicks'>
+  const renderForm = (cat) => {
+
+    let test = cat.id;
+    console.log(test);
+		editArea.innerHTML = `<form class="admin-form">Name:<input type='text' id='name'>
+		<br>Image:<input type='text' id='image'>
+		<br>Count:<input type='text' id='clicks'>
 		<br><button id='save'>Save</button>
 		<br><button id='cancel'>Cancel</button>
 		</form>`;
-		console.log(editArea, 'form');
+    let name = document.getElementById('name').value = cat.name;
+    let img = document.getElementById('image').value = cat.image;
+    let clicks = document.getElementById('clicks').value = cat.counter;
 	};
 
 	function toggleKittyForm() {
