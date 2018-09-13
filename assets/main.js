@@ -95,6 +95,7 @@ const model = [
 
 // Octopus
 const octopus = (() => {
+  // First cat in the array to display as default on window load
   selectedKitty = model[0];
   function init() {
     kittyView.handler();
@@ -123,8 +124,21 @@ const octopus = (() => {
   }
 
   function selectButtonKitty(e) {
-
     viewAdmin.renderForm();
+
+  }
+
+  function updateKitty(name, image, counter) {
+    let index = model.indexOf(selectedKitty)
+    selectedKitty = {
+      name: name,
+      image: image,
+      counter: Number(counter)
+    };
+    model[index] = selectedKitty;
+    kittyView.render(selectedKitty);
+    console.log(selectedKitty);
+
   }
 
   return {
@@ -132,7 +146,8 @@ const octopus = (() => {
     incrementCat,
     selectKitty,
     selectButtonKitty,
-    selectedKitty 
+    selectedKitty,
+    updateKitty
   };
 })();
 
@@ -201,30 +216,44 @@ const viewAdmin = (adminElement => {
     adminButton.addEventListener('click', octopus.selectButtonKitty, false);
   };
 
+  const save = () => {
+    const saveButton = document.getElementById('save');
+    saveButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.target
+      let newName = document.getElementById('name').value;
+      let newImg = document.getElementById('image').value;
+      let newCount = document.getElementById('clicks').value;
+      octopus.updateKitty(newName, newImg, newCount)
+    });
+      };
+
   let editArea = document.getElementById('form');
   const renderForm = (cat) => {
-
-    let test = cat.id;
-    console.log(test);
-		editArea.innerHTML = `<form class="admin-form">Name:<input type='text' id='name'>
-		<br>Image:<input type='text' id='image'>
-		<br>Count:<input type='text' id='clicks'>
-		<br><button id='save'>Save</button>
-		<br><button id='cancel'>Cancel</button>
+		editArea.innerHTML = `<form class="admin-form">Name:<input type="text" name="id" id="name">
+		<br>Image:<input type="text" name="image" id="image">
+		<br>Count:<input type="text" name="clicks" id="clicks">
+		<br><button type="submit" id="save">Save</button>
+		<br><button  id="cancel" >Cancel</button>
 		</form>`;
     let name = document.getElementById('name').value = cat.name;
     let img = document.getElementById('image').value = cat.image;
     let clicks = document.getElementById('clicks').value = cat.counter;
+    save(name, img, clicks);
 	};
 
 	function toggleKittyForm() {
 
 
-  }
+  };
+
+
+
   return {
     formInit,
     renderForm,
-    toggleKittyForm
+    toggleKittyForm,
+    save
   };
 })(document.querySelector('.edit-kitty'));
 
