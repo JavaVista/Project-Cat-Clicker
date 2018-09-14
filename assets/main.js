@@ -104,7 +104,6 @@ const octopus = (() => {
     kittyList.renderList(model);
     viewAdmin.formInit();
     viewAdmin.toggleKittyForm();
-
   }
 
   function selectKitty(id) {
@@ -125,20 +124,20 @@ const octopus = (() => {
 
   function selectButtonKitty(e) {
     viewAdmin.renderForm();
-
   }
 
-  function updateKitty(name, image, counter) {
-    let index = model.indexOf(selectedKitty)
+  function updateKitty(name, image, counter, id) {
+    let index = model.indexOf(selectedKitty);
     selectedKitty = {
       name: name,
       image: image,
-      counter: Number(counter)
+      counter: counter,
+      id: id
     };
-    model[index] = selectedKitty;
-    kittyView.render(selectedKitty);
     console.log(selectedKitty);
-
+    model[index] = selectedKitty;
+    kittyList.renderList(model);
+    kittyView.render(selectedKitty);
   }
 
   return {
@@ -212,42 +211,38 @@ const viewAdmin = (adminElement => {
   let displayAdmin = adminElement;
 
   const formInit = () => {
-	const adminButton = document.querySelector('#edit');
+    const adminButton = document.querySelector('#edit');
     adminButton.addEventListener('click', octopus.selectButtonKitty, false);
   };
 
-  const save = () => {
+  const save = (newName, newImg, clicks, id) => {
     const saveButton = document.getElementById('save');
-    saveButton.addEventListener('click', (e) => {
+    saveButton.addEventListener('click', e => {
+      newName = document.getElementById('name').value;
+      newImg = document.getElementById('image').value;
+      clicks = document.getElementById('clicks').value;
       e.preventDefault();
-      e.target
-      let newName = document.getElementById('name').value;
-      let newImg = document.getElementById('image').value;
-      let newCount = document.getElementById('clicks').value;
-      octopus.updateKitty(newName, newImg, newCount)
+      e.target;
+      octopus.updateKitty(newName, newImg, clicks, id);
     });
-      };
+  };
 
   let editArea = document.getElementById('form');
-  const renderForm = (cat) => {
-		editArea.innerHTML = `<form class="admin-form">Name:<input type="text" name="id" id="name">
+  const renderForm = cat => {
+    editArea.innerHTML = `<form class="admin-form">Name:<input type="text" name="id" id="name">
 		<br>Image:<input type="text" name="image" id="image">
 		<br>Count:<input type="text" name="clicks" id="clicks">
 		<br><button type="submit" id="save">Save</button>
 		<br><button  id="cancel" >Cancel</button>
 		</form>`;
-    let name = document.getElementById('name').value = cat.name;
-    let img = document.getElementById('image').value = cat.image;
-    let clicks = document.getElementById('clicks').value = cat.counter;
-    save(name, img, clicks);
-	};
-
-	function toggleKittyForm() {
-
-
+    let name = (document.getElementById('name').value = cat.name);
+    let img = (document.getElementById('image').value = cat.image);
+    let clicks = (document.getElementById('clicks').value = cat.counter);
+    let id = cat.id;
+    save(name, img, clicks, id);
   };
 
-
+  function toggleKittyForm() {}
 
   return {
     formInit,
