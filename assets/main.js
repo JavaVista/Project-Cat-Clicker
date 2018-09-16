@@ -95,15 +95,11 @@ const model = [
 
 // Octopus
 const octopus = (() => {
-  // First cat in the array to display as default on window load
-  selectedKitty = model[0];
+  let selectedKitty = model[0];
   function init() {
     kittyView.handler();
     kittyList.buttonHandler();
-    kittyView.render(selectedKitty);
     kittyList.renderList(model);
-    viewAdmin.formInit();
-    viewAdmin.toggleKittyForm();
   }
 
   function selectKitty(id) {
@@ -112,7 +108,6 @@ const octopus = (() => {
     });
     kittyView.render(selectedKitty);
     viewAdmin.renderForm(selectedKitty);
-    //selectedKitty = model[0];
   }
 
   function incrementCat(e) {
@@ -122,8 +117,9 @@ const octopus = (() => {
     }
   }
 
-  function selectButtonKitty(e) {
-    viewAdmin.renderForm();
+  function toggleAdmin() {
+    let formDisplay = document.querySelectorAll('.admin-form');
+    formDisplay.forEach(admin => admin.classList.toggle('admin-show'));
   }
 
   function updateKitty(name, image, counter, id) {
@@ -134,7 +130,6 @@ const octopus = (() => {
       counter: counter,
       id: id
     };
-    console.log(selectedKitty);
     model[index] = selectedKitty;
     kittyList.renderList(model);
     kittyView.render(selectedKitty);
@@ -144,7 +139,7 @@ const octopus = (() => {
     init,
     incrementCat,
     selectKitty,
-    selectButtonKitty,
+    toggleAdmin,
     selectedKitty,
     updateKitty
   };
@@ -167,7 +162,6 @@ const kittyView = (viewElement => {
     } alt="Here Kitty Kitty">
     </div>
     <div class="admin edit-kitty">
-      <p>Select an Kitty image if you want to edit it or to add a different image</p>
       <button id="edit">Edit Kitty</button>
     </div>`;
   }
@@ -207,12 +201,12 @@ const kittyList = (listElement => {
   };
 })(document.querySelector('.side'));
 
-const viewAdmin = (adminElement => {
-  let displayAdmin = adminElement;
-
-  const formInit = () => {
-    const adminButton = document.querySelector('#edit');
-    adminButton.addEventListener('click', octopus.selectButtonKitty, false);
+const viewAdmin = (() => {
+  const clickAdmin = () => {
+    const adminButton = document.getElementById('edit');
+    const cancelButton = document.getElementById('cancel');
+    adminButton.addEventListener('click', octopus.toggleAdmin, false);
+    cancelButton.addEventListener('click', octopus.toggleAdmin, false);
   };
 
   const save = (newName, newImg, clicks, id) => {
@@ -233,23 +227,21 @@ const viewAdmin = (adminElement => {
 		<br>Image:<input type="text" name="image" id="image">
 		<br>Count:<input type="text" name="clicks" id="clicks">
 		<br><button type="submit" id="save">Save</button>
-		<br><button  id="cancel" >Cancel</button>
-		</form>`;
+		<br><button type="reset" id="cancel">Cancel</button>
+    </form>`;
     let name = (document.getElementById('name').value = cat.name);
     let img = (document.getElementById('image').value = cat.image);
     let clicks = (document.getElementById('clicks').value = cat.counter);
     let id = cat.id;
+    clickAdmin();
     save(name, img, clicks, id);
   };
 
-  function toggleKittyForm() {}
-
   return {
-    formInit,
+    clickAdmin,
     renderForm,
-    toggleKittyForm,
     save
   };
-})(document.querySelector('.edit-kitty'));
+})();
 
 document.addEventListener('DOMContentLoaded', octopus.init);
