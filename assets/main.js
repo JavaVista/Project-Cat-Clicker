@@ -95,11 +95,10 @@ const model = [
 
 // Octopus
 const octopus = (() => {
-  selectedKitty = model[0];
+  let selectedKitty = model[0];
   function init() {
     kittyView.handler();
     kittyList.buttonHandler();
-    kittyView.render(selectedKitty);
     kittyList.renderList(model);
   }
 
@@ -108,26 +107,47 @@ const octopus = (() => {
       return cat.id === Number(id);
     });
     kittyView.render(selectedKitty);
+    viewAdmin.renderForm(selectedKitty);
   }
 
   function incrementCat(e) {
-    selectedKitty.counter++;
-    kittyView.render(selectedKitty);
-    e.stopPropagation();
+    if (e.target && e.target.nodeName == 'IMG') {
+      selectedKitty.counter++;
+      kittyView.render(selectedKitty);
+    }
   }
+
+  function toggleAdmin() {
+    let formDisplay = document.querySelectorAll('.admin-form');
+    formDisplay.forEach(admin => admin.classList.toggle('admin-show'));
+  }
+
+  function updateKitty(name, image, counter, id) {
+    let index = model.indexOf(selectedKitty);
+    selectedKitty = {
+      name: name,
+      image: image,
+      counter: counter,
+      id: id
+    };
+    model[index] = selectedKitty;
+    kittyList.renderList(model);
+    kittyView.render(selectedKitty);
+  }
+
   return {
     init,
     incrementCat,
-    selectKitty
+    selectKitty,
+    toggleAdmin,
+    selectedKitty,
+    updateKitty
   };
 })();
-window.addEventListener('load', octopus.init);
 
 // View
-const kittyView = (() => {
-  let element = document.querySelector('.content');
- /*TODO: target picture e targeting outside of it to increase counter
-  let kittyImage = document.querySelector('.kitty-image'); */
+const kittyView = (viewElement => {
+  let element = viewElement;
   function handler() {
     element.addEventListener('click', octopus.incrementCat, false);
   }
@@ -135,18 +155,21 @@ const kittyView = (() => {
   function render(cat) {
     element.innerHTML = `
     <div class="kitty-name">
-    <h2>${cat.name}</h2>
-    <div class="count">CUTIE COUNT: ${cat.counter}</div>
-    <img id=${cat.id} class="kitty-image" src=${
+      <h2>${cat.name}</h2>
+      <div class="count">CUTIE COUNT: ${cat.counter}</div>
+      <img id=${cat.id} class="kitty-image" src=${
       cat.image
     } alt="Here Kitty Kitty">
+    </div>
+    <div class="admin edit-kitty">
+      <button id="edit">Edit Kitty</button>
     </div>`;
   }
   return {
     render,
     handler
   };
-})();
+})(document.querySelector('.content'));
 
 const kittyList = (listElement => {
   const kittyDisplay = listElement;
@@ -155,13 +178,10 @@ const kittyList = (listElement => {
     kittyDisplay.addEventListener(
       'click',
       function(e) {
-        /*TODO: fix bug conserning e.target going outside of button.
-          use this to target button:
-          const kittyButton = document.querySelector('button');
-          console.log('this',this, kittyButton); */
-        let id = e.target.id;
-        octopus.selectKitty(id);
-        e.stopPropagation();
+        if (e.target && e.target.nodeName == 'BUTTON') {
+          let id = e.target.id;
+          octopus.selectKitty(id);
+        }
       },
       false
     );
@@ -170,14 +190,58 @@ const kittyList = (listElement => {
   function renderList(cats) {
     kittyDisplay.innerHTML = `<h2>List of Kitties</h2>`;
     cats.forEach(cat => {
-      kittyDisplay.innerHTML += `<li><button id=${cat.id}>${
+      kittyDisplay.innerHTML += `<li><button class="list" id=${cat.id}>${
         cat.name
       }</button></li>`;
     });
   }
-
   return {
     renderList,
     buttonHandler
   };
 })(document.querySelector('.side'));
+
+const viewAdmin = (() => {
+  const clickAdmin = () => {
+    const adminButton = document.getElementById('edit');
+    const cancelButton = document.getElementById('cancel');
+    adminButton.addEventListener('click', octopus.toggleAdmin, false);
+    cancelButton.addEventListener('click', octopus.toggleAdmin, false);
+  };
+
+  const save = (newName, newImg, clicks, id) => {
+    const saveButton = document.getElementById('save');
+    saveButton.addEventListener('click', e => {
+      newName = document.getElementById('name').value;
+      newImg = document.getElementById('image').value;
+      clicks = document.getElementById('clicks').value;
+      e.preventDefault();
+      e.target;
+      octopus.updateKitty(newName, newImg, clicks, id);
+    });
+  };
+
+  let editArea = document.getElementById('form');
+  const renderForm = cat => {
+    editArea.innerHTML = `<form class="admin-form">Name:<input type="text" name="id" id="name">
+		<br>Image:<input type="text" name="image" id="image">
+		<br>Count:<input type="text" name="clicks" id="clicks">
+		<br><button type="submit" id="save">Save</button>
+		<br><button type="reset" id="cancel">Cancel</button>
+    </form>`;
+    let name = (document.getElementById('name').value = cat.name);
+    let img = (document.getElementById('image').value = cat.image);
+    let clicks = (document.getElementById('clicks').value = cat.counter);
+    let id = cat.id;
+    clickAdmin();
+    save(name, img, clicks, id);
+  };
+
+  return {
+    clickAdmin,
+    renderForm,
+    save
+  };
+})();
+
+document.addEventListener('DOMContentLoaded', octopus.init);
