@@ -3,17 +3,17 @@
 ### Table of Contents
 
 - [Overview](#overview)
-    - [Task](#task)
-        - [Requirement 1](#requirement-1)
-        - [Requirement 2](#requirement-2)
-        - [Requirement 3](#requirement-3)
-        - [Requirement 4](#requirement-4)
-        - [Requirement 5](#requirement-5)
+  - [Task](#task)
+    - [Requirement 1](#requirement-1)
+    - [Requirement 2](#requirement-2)
+    - [Requirement 3](#requirement-3)
+    - [Requirement 4](#requirement-4)
+    - [Requirement 5](#requirement-5)
     - [Technologies Used](#technologies-used)
 - [Project Instructions](#project-instructions)
-    - [Demo](#demo)
+  - [Demo](#demo)
 - [Contact / Social Media](#contact--social-media)
-    - [License](#license)
+  - [License](#license)
 
 ## Overview
 
@@ -43,7 +43,7 @@ Refactored Cat Clicker Premium to add MVO design patterns to the project.
 
 #### Requirement 5
 
-The Cat Clicker Premium Pro application has an admin area for each cat displayed with inputs for changing the cat's name, url, and number of clicks (hidden by default). When the admin button is clicked, the admin area appears with the inputs filled in for the currently-selected cat. When the cancel button in the admin area is pressed, the admin area disappears. When the save button in the admin area is pressed, the currently-selected cat's values update with the values in the admin area.
+The Cat Clicker Premium Pro application has an admin area for each cat displayed with inputs for changing the cat's name, url, and number of clicks (hidden by default). When the admin button is clicked, the admin area appears with the inputs filled in for the currently-selected cat. When the cancel button in the admin area is pressed, the admin area disappears. When the save button in the admin area is pressed, the currently-selected cat's values update with the values in the admin area and the admin area disappears.
 
 ### Technologies Used
 
