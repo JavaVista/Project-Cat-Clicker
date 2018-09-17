@@ -218,6 +218,7 @@ const viewAdmin = (() => {
       e.preventDefault();
       e.target;
       octopus.updateKitty(newName, newImg, clicks, id);
+      octopus.toggleAdmin();
     });
   };
 
